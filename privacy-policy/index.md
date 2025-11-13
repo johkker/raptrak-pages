@@ -199,9 +199,7 @@ Processamos seus dados com base em:
 
 Para questões sobre privacidade, exercício de direitos ou dúvidas sobre esta política:
 
-**E-mail:** [SEU_EMAIL_DE_CONTATO]  
-**Encarregado de Proteção de Dados (DPO):** [NOME_DO_DPO]  
-**Endereço:** [SEU_ENDEREÇO_COMPLETO]
+**E-mail:** johkker@gmail.com
 
 Você também pode registrar uma reclamação junto à **Autoridade Nacional de Proteção de Dados (ANPD)**: https://www.gov.br/anpd/pt-br
 
