@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusão de Dados Confirmada - RapTrak</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .message {
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+
+        .details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .details h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .detail-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .detail-item strong {
+            color: #333;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #856404;
+            text-align: left;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-text {
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 RapTrak</h1>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p class="spinner-text">Processando sua confirmação...</p>
+        </div>
+
+        <div id="success" style="display: none;">
+            <div class="icon">✅</div>
+            <div class="message success">
+                <strong>Exclusão Confirmada!</strong><br>
+                Sua conta foi marcada para exclusão permanente.
+            </div>
+
+            <div class="details">
+                <h3>📋 O que acontece agora:</h3>
+                <div class="detail-item">
+                    <strong>Período de Graça:</strong> Você tem até <span id="graceDate"></span> para cancelar a exclusão.
+                </div>
+                <div class="detail-item">
+                    <strong>Exclusão Permanente:</strong> Após 30 dias, sua conta e dados pessoais serão permanentemente deletados.
+                </div>
+                <div class="detail-item">
+                    <strong>Dados Preservados:</strong> Seu histórico de batalhas permanecerá como "Usuário Deletado".
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Importante:</strong> Se você mudar de ideia, você pode cancelar a exclusão fazendo login em sua conta até a data de graça expirar.
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-primary" onclick="goHome()">Voltar ao Site</button>
+            </div>
+        </div>
+
+        <div id="error" style="display: none;">
+            <div class="icon">❌</div>
+            <div class="message error" id="errorMessage">
+                Ocorreu um erro ao processar sua confirmação. Por favor, tente novamente.
+            </div>
+
+            <div class="details">
+                <h3>Possíveis Motivos:</h3>
+                <div class="detail-item">• O token expirou (válido por 7 dias)</div>
+                <div class="detail-item">• O email não corresponde à solicitação</div>
+                <div class="detail-item">• A solicitação já foi processada</div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-primary" onclick="goHome()">Voltar ao Site</button>
+                <button type="button" class="btn-secondary" onclick="goDelete()">Tentar Novamente</button>
+            </div>
+        </div>
+
+        <div id="cancelled" style="display: none;">
+            <div class="icon">ℹ️</div>
+            <div class="message info">
+                Sua solicitação de exclusão foi cancelada ou já foi processada.
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-primary" onclick="goHome()">Voltar ao Site</button>
+            </div>
+        </div>
+
+        <div class="back-link" id="backLink" style="display: none;">
+            <a href="/">← Voltar ao site</a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://raptrak-production.up.railway.app';
+
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function showSuccess(scheduledDate) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('backLink').style.display = 'block';
+            
+            const date = new Date(scheduledDate);
+            const formatted = date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('graceDate').textContent = formatted;
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('backLink').style.display = 'block';
+            if (message) {
+                document.getElementById('errorMessage').textContent = message;
+            }
+        }
+
+        function showCancelled() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('cancelled').style.display = 'block';
+            document.getElementById('backLink').style.display = 'block';
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        function goDelete() {
+            window.location.href = '/index-data-deletion.html';
+        }
+
+        async function verifyDeletion() {
+            const token = getQueryParam('token');
+            const email = getQueryParam('email');
+
+            if (!token || !email) {
+                showError('Token ou email ausente na URL.');
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `${API_URL}/data-deletion/verify/${token}?email=${encodeURIComponent(email)}`
+                );
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess(data.scheduledDate);
+                } else if (response.status === 400) {
+                    showCancelled();
+                } else {
+                    showError(data.message || 'Erro ao verificar exclusão.');
+                }
+            } catch (error) {
+                showError('Não foi possível conectar ao servidor. Tente novamente mais tarde.');
+                console.error('Error:', error);
+            }
+        }
+
+        // Verify on page load
+        verifyDeletion();
+    </script>
+</body>
+</html>
